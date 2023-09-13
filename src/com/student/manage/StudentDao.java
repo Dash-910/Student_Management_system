@@ -1,8 +1,10 @@
 package com.student.manage;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
 import com.google.gson.Gson;
 
 public class StudentDao {
@@ -58,7 +60,7 @@ public class StudentDao {
             ResultSet set = stmt.executeQuery(query);
 
             while (set.next()) {
-                int id = set.getInt("id");
+                int id = set.getInt("sid"); // Change "id" to "sid"
                 String name = set.getString("sname");
                 String phone = set.getString("sphone");
                 String addressJson = set.getString("address");
@@ -109,6 +111,31 @@ public class StudentDao {
             e.printStackTrace();
         }
         return flag;
+    }
+
+    public static boolean isStudentExists(int studentId) {
+        boolean exists = false;
+
+        try {
+            Connection con = CP.createC();
+
+            String query = "SELECT COUNT(*) FROM students WHERE sid=?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, studentId);
+
+            ResultSet resultSet = pstmt.executeQuery();
+            resultSet.next();
+
+            int count = resultSet.getInt(1);
+
+            if (count > 0) {
+                exists = true;
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return exists;
     }
 
     private static String convertAddressToJson(Address address) {

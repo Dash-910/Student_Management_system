@@ -12,7 +12,7 @@ public class CP {
             // Load the driver
             Class.forName("com.mysql.cj.jdbc.Driver");
             String user = "root";
-            String password = "root123";
+            String password = "********";
             String url = "jdbc:mysql://localhost:3306/student_manage";
             con = DriverManager.getConnection(url, user, password);
         } catch (Exception e) {
